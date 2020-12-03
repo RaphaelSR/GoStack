@@ -1,17 +1,19 @@
 {
     "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
+	"host": "localhost",
+	"_comment": "port 5432 used in home pc and 5433 in work pc, change port in accord with the computer",
+    "port": 5433, 
     "username": "postgres",
     "password": "docker",
     "database": "gostack_gobarber",
 	"entities": [
-		"./src/models/*.ts"
+		"./src/modules/appointments/entities/*.ts",
+		"./src/modules/appointments/users/*.ts"
 	],
 	"migrations": [
-		"./src/database/migrations/*.ts"
+		"./src/shared/database/migrations/*.ts"
 	],
 	"cli": {
-		"migrationsDir": "./src/database/migrations"
+		"migrationsDir": "./src/shared/database/migrations"
 	}
 }
