@@ -1,5 +1,5 @@
-import AddAvatarFieldToUsers1600791313466 from '../shared/infra/database/migrations/1600791313466-AddAvatarFieldToUsers';
-import User from '../modules/users/infra/typeorm/entities/User';
+import AddAvatarFieldToUsers1600791313466 from '@shared/infra/database/migrations/1600791313466-AddAvatarFieldToUsers';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 // Retira o password da resposta.
 

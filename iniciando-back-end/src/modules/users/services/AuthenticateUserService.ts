@@ -1,9 +1,9 @@
 import { compare } from 'bcryptjs';
 import {getRepository} from 'typeorm';
-import User from '../infra/typeorm/entities/User';
+import User from '@modules/users/infra/typeorm/entities/User';
 import {sign} from 'jsonwebtoken';
-import authConfig from '../../../config/auth';
-import AppError from '../../../shared/errors/AppError';
+import authConfig from '@config/auth';
+import AppError from '@shared/errors/AppError';
 //import { hash } from 'bcryptjs';
 
 

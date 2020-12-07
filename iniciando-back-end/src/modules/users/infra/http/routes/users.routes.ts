@@ -1,10 +1,10 @@
 import { Router } from "express";
-import UserMap from "../../../../mappers/UserMap";
-import CreateUserService from "../../../../modules/users/services/CreateUserService";
-import UpdateUserAvatarService from "../../../../modules/users/services/UpdateUserAvatarService";
-import ensureAthenticated from "../middlewares/ensureAuthenticated";
+import UserMap from "@modules/users/config/mappers/UserMap";
+import CreateUserService from "@modules/users/services/CreateUserService";
+import UpdateUserAvatarService from "@modules/users/services/UpdateUserAvatarService";
+import ensureAthenticated from "@modules/users/infra/http/middlewares/ensureAuthenticated";
 import multer from "multer";
-import uploadConfig from "../../../../config/upload";
+import uploadConfig from "@config/upload";
 
 
 const usersRouter = Router();
