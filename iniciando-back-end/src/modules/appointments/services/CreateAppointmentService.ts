@@ -1,29 +1,22 @@
 import { startOfHour } from 'date-fns';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
-
-// SOLID
-
-// #Single Responsability Principle
-// Open Closed Principle
-// #Liskov Substituion Principle
-// Interface Segregation Principle
-// # Dependency Invertion Principle
-
-
-
-
 interface IRequest {
   date: Date;
   provider_id: string;
 }
 
+@injectable()
 class CreateAppointmentService {
-  constructor(private appointmentsRepository: IAppointmentsRepository) {}
+  constructor(
+    @inject('AppointmentsRepository')
+    private appointmentsRepository: IAppointmentsRepository,
+  ) {}
 
   public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
