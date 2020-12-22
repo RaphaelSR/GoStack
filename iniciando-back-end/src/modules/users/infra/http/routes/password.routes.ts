@@ -11,3 +11,4 @@ passwordRouter.post('/forgot', forgotPasswordController.create);
 passwordRouter.post('/reset', resetPasswordController.create);
 
 export default passwordRouter;
+
