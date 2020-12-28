@@ -1,32 +1,49 @@
-import { uuid } from 'uuidv4';
-import { isEqual } from 'date-fns';
-
+import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
-import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import IAppointmentsRepository from '../IAppointmentsRepository';
+import { uuid } from 'uuidv4';
+import { isEqual, getMonth, getYear } from 'date-fns';
+import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
+import Appointment from '../../infra/typeorm/entities/Appointment';
 
-export default class FakeAppointmentsRepository
-  implements IAppointmentsRepository {
-  private appointments: Appointment[] = [];
+class AppointmentsRepository implements IAppointmentsRepository {
+    private appointments: Appointment[] = [];
 
-  public async findByDate(date: Date): Promise<Appointment | undefined> {
-    const findAppointment = this.appointments.find(appointment =>
-      isEqual(appointment.date, date),
-    );
+    public async findByDate(date: Date): Promise<Appointment | undefined> {
+        const findAppointment = this.appointments.find(appointment =>
+            isEqual(appointment.date, date),
+        );
+        return findAppointment;
+    }
 
-    return findAppointment;
-  }
+    public async findAllInMonthFromProvider({
+        provider_id,
+        month,
+        year,
+    }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
+        const appointments = this.appointments.filter(appointment => {
+            return (
+                appointment.provider_id === provider_id &&
+                getMonth(appointment.date) + 1 === month &&
+                getYear(appointment.date) === year
+            );
+            // o mês das bibliotecas javascript começando com zero por isso o + 1)
+        });
 
-  public async create({
-    provider_id,
-    date,
-  }: ICreateAppointmentDTO): Promise<Appointment> {
-    const appointment = new Appointment();
+        return appointments;
+    }
 
-    Object.assign(appointment, { id: uuid(), date, provider_id });
+    public async create({
+        provider_id,
+        date,
+    }: ICreateAppointmentDTO): Promise<Appointment> {
+        const appointment = new Appointment();
 
-    this.appointments.push(appointment);
+        Object.assign(appointment, { id: uuid(), date, provider_id });
 
-    return appointment;
-  }
+        this.appointments.push(appointment);
+
+        return appointment;
+    }
 }
+
+export default AppointmentsRepository;
