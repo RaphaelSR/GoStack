@@ -1,42 +1,53 @@
-import { uuid } from 'uuidv4';
-
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import { uuid } from 'uuidv4';
+import IFindALlProviderDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 
 import User from '../../infra/typeorm/entities/User';
 
-class UsersRepository implements IUsersRepository {
-  private users: User[] = [];
+class FakeUsersRepository implements IUsersRepository {
+    private users: User[] = [];
 
-  public async findById(id: string): Promise<User | undefined> {
-    const findUser = this.users.find(user => user.id === id);
+    public async findById(id: string): Promise<User | undefined> {
+        const findUser = this.users.find(user => user.id === id);
+        return findUser;
+    }
 
-    return findUser;
-  }
+    public async findByEmail(email: string): Promise<User | undefined> {
+        const findUser = this.users.find(user => user.email === email);
+        return findUser;
+    }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
-    const findUser = this.users.find(user => user.email === email);
+    public async findAllProviders({
+        except_user_id,
+    }: IFindALlProviderDTO): Promise<User[]> {
+        let { users } = this;
 
-    return findUser;
-  }
+        if (except_user_id) {
+            users = this.users.filter(user => user.id !== except_user_id);
+        }
 
-  public async create(userData: ICreateUserDTO): Promise<User> {
-    const user = new User();
+        return users;
+    }
 
-    Object.assign(user, { id: uuid() }, userData);
+    public async create(userData: ICreateUserDTO): Promise<User> {
+        const user = new User();
 
-    this.users.push(user);
+        Object.assign(user, { id: uuid() }, userData);
 
-    return user;
-  }
+        this.users.push(user);
+        return user;
+    }
 
-  public async save(user: User): Promise<User> {
-    const findIndex = this.users.findIndex(findUser => findUser.id === user.id);
+    public async save(user: User): Promise<User> {
+        const findIndex = this.users.findIndex(
+            findUser => findUser.id === user.id,
+        );
 
-    this.users[findIndex] = user;
+        this.users[findIndex] = user;
 
-    return user;
-  }
+        return user;
+    }
 }
 
-export default UsersRepository;
+export default FakeUsersRepository;
