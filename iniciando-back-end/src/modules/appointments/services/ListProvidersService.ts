@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import User from '@modules/users/infra/typeorm/entities/User';
@@ -22,4 +23,4 @@ class ListProviderService {
     }
 }
 
-export default ListProviderService
+export default ListProviderService;
